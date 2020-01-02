@@ -415,8 +415,13 @@ public class TableInfoHelper {
      */
     public static boolean checkRelated(boolean underCamel, String property, String column) {
         if (StringUtils.isNotColumnName(column)) {
-            // 首尾有转义符,手动在注解里设置了转义符,去除掉转义符
-            column = column.substring(1, column.length() - 1);
+            // 首尾有转义符,手动在注解里设置了转义符,去除掉转义符[这句有bug, 当字段为1个字符时报错(例如字段为“省”)]
+            //column = column.substring(1, column.length() - 1);
+            if(column.length() == 1){
+                column = "";
+            }else{
+                column = column.substring(1, column.length() - 1);
+            }
         }
         String propertyUpper = property.toUpperCase(Locale.ENGLISH);
         String columnUpper = column.toUpperCase(Locale.ENGLISH);
